@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CoteCoffee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6EEE0; --green:#214A35; --green-2:#2F6A4A; --leaf:#467552;
+  --ink:#2B2A26; --muted:#6F6A5F; --card:#FFFFFF; --line:#E4D9C4;
+  --amber-bg:#F4E6CF; --amber-ink:#6B4A12; --mint:#E3EBE3; --page:#E9E2D2;
+}
+@media (prefers-color-scheme: dark){
+  :root{--page:#14120f}
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:Inter,system-ui,sans-serif;background:var(--page);color:var(--ink);-webkit-font-smoothing:antialiased;display:flex;justify-content:center;align-items:center}
+.app{width:100%;max-width:400px;height:100dvh;max-height:860px;background:var(--bg);display:flex;flex-direction:column;position:relative;overflow:hidden}
+@media(min-width:520px){.app{border-radius:36px;border:6px solid var(--green);box-shadow:0 20px 60px rgba(0,0,0,.2);height:min(860px,96dvh)}}
+header{padding:calc(14px + env(safe-area-inset-top)) 20px 8px}
+.top{display:flex;justify-content:space-between;align-items:center;min-height:24px}
+.back{background:none;border:0;color:var(--green);font:500 13px Inter;cursor:pointer;padding:4px 0}
+.brand{color:var(--green);font-weight:500;font-size:14px;margin-left:auto}
+.steps{display:flex;gap:4px;margin-top:10px}
+.steps i{flex:1;height:3px;border-radius:2px;background:var(--line)}
+.steps i.on{background:var(--green)}
+.stepmeta{display:flex;justify-content:space-between;font-size:10px;margin-top:6px;color:var(--muted)}
+.stepmeta b{color:var(--green);font-weight:600}
+main{flex:1;overflow-y:auto;padding:12px 20px 16px}
+footer{padding:12px 20px calc(16px + env(safe-area-inset-bottom));display:flex;flex-direction:column;gap:8px}
+h1{font-size:24px;line-height:1.2;font-weight:600;color:var(--green);margin:8px 0 8px}
+h2{font-size:15px;font-weight:600;margin-bottom:6px}
+p{font-size:13px;line-height:1.5;color:var(--muted);margin-bottom:10px}
+.eyebrow{font-size:10px;letter-spacing:.08em;font-weight:600;color:var(--green-2);text-transform:uppercase;margin-bottom:6px}
+.tag{font-size:10px;color:var(--amber-ink);margin-bottom:12px;display:flex;align-items:center;gap:5px}
+.tag:before{content:"";width:5px;height:5px;border-radius:50%;background:#C9822B}
+.hero{background:var(--mint);border-radius:14px;height:130px;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
+.card{background:var(--card);border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid var(--line)}
+.card p:last-child{margin-bottom:0}
+.note{background:var(--amber-bg);color:var(--amber-ink);border-radius:12px;padding:12px;font-size:12.5px;line-height:1.45;margin-bottom:10px}
+.note b{display:block;margin-bottom:2px}
+.note.mint{background:var(--mint);color:var(--green)}
+.big{background:var(--green);color:#fff;border-radius:16px;padding:18px;margin-bottom:10px}
+.big small{opacity:.8;font-size:12px}
+.big .n{font-size:44px;font-weight:700;line-height:1.1;margin:4px 0}
+.big .s{font-size:16px}
+.big hr{border:0;border-top:1px solid rgba(255,255,255,.2);margin:12px 0 8px}
+.big .f{font-size:11.5px;opacity:.85}
+.list{list-style:none}
+.list li{display:flex;gap:10px;font-size:13px;line-height:1.45;margin:10px 0;color:var(--ink)}
+.list li:before{content:"•";color:var(--green-2);font-weight:700}
+.btn{width:100%;border:0;border-radius:12px;padding:15px;font:600 14px Inter;cursor:pointer;background:var(--green);color:#fff}
+.btn:active{transform:scale(.99)}
+.btn.sec{background:transparent;color:var(--green);border:1.5px solid var(--green)}
+.btn.link{background:none;color:var(--green);font-weight:500;padding:6px}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.q{margin-bottom:20px}
+.q label.t{display:block;font-size:14px;font-weight:600;margin-bottom:4px;color:var(--ink)}
+.q .h{font-size:12px;color:var(--muted);margin-bottom:8px}
+.scale{display:flex;gap:6px}
+.scale button{flex:1;padding:12px 0;border-radius:10px;border:1.5px solid var(--line);background:var(--card);font:600 15px Inter;color:var(--ink);cursor:pointer}
+.scale button.on{background:var(--green);color:#fff;border-color:var(--green)}
+.scale-l{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);margin-top:4px}
+.opts{display:flex;flex-direction:column;gap:6px}
+.opts button{text-align:left;padding:12px 14px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);font:500 13px Inter;color:var(--ink);cursor:pointer;display:flex;gap:10px;align-items:center}
+.opts button:before{content:"";width:16px;height:16px;border-radius:50%;border:1.5px solid var(--muted);flex:none}
+.opts.multi button:before{border-radius:4px}
+.opts button.on{border-color:var(--green);background:var(--mint)}
+.opts button.on:before{background:var(--green);border-color:var(--green);box-shadow:inset 0 0 0 3px var(--mint)}
+textarea{width:100%;min-height:90px;border-radius:10px;border:1.5px solid var(--line);padding:12px;font:400 13px Inter;background:var(--card);color:var(--ink);resize:vertical}
+textarea:focus,button:focus-visible{outline:2px solid var(--green-2);outline-offset:1px}
+.sec-title{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--green-2);font-weight:600;margin:4px 0 12px}
+/* resultados */
+.res table{width:100%;border-collapse:collapse;font-size:12px}
+.res td,.res th{padding:6px 4px;text-align:left;border-bottom:1px solid var(--line)}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--green-2)}
+.cm{font-size:12.5px;padding:8px 0;border-bottom:1px solid var(--line);color:var(--ink)}
+.fade{animation:f .25s ease}
+@keyframes f{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.fade{animation:none}}
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+/* ===== CONFIG =====
+   endpoint: URL de um Google Apps Script (Web App) que recebe o JSON e grava na planilha.
+   Enquanto estiver vazio, as respostas ficam só neste navegador (localStorage). */
+const CONFIG = { endpoint: "https://script.google.com/macros/s/AKfycbyftzNNERz78MwKbujyzj5SGcSb3V7c9DjTfMsDKgyH7-6_cmNvU11dw6uW_oCaqa5E/exec", storageKey: "cotecoffee_respostas_v1" };
+
+const LEAF = `<svg width="150" height="110" viewBox="0 0 150 110" aria-hidden="true">
+<path d="M10 100 C45 80 80 55 120 15" stroke="#2F5A3E" stroke-width="3" fill="none" stroke-linecap="round"/>
+<path d="M30 75 C10 60 18 35 48 28 C58 52 50 68 30 75Z" fill="#467552"/>
+<path d="M70 52 C55 28 72 8 100 8 C108 32 92 48 70 52Z" fill="#467552"/>
+<path d="M85 66 C110 70 135 58 138 38 C112 32 92 44 85 66Z" fill="#3B6A47"/>
+<circle cx="86" cy="58" r="7" fill="#C9822B"/></svg>`;
+
+const STEPS = 7;
+const state = { answers: {}, screen: "boas-vindas" };
+try { Object.assign(state.answers, JSON.parse(sessionStorage.getItem("ans")||"{}")); } catch(e){}
+const save = () => { try{ sessionStorage.setItem("ans", JSON.stringify(state.answers)); }catch(e){} };
+
+/* ===== TELAS ===== */
+const screens = {
+ "boas-vindas":{step:1,label:"Boas-vindas",back:null,btn:["Entrar no painel inicial","painel"],html:()=>`
+  <div class="hero">${LEAF}</div>
+  <div class="eyebrow">Mais clareza para quem produz</div>
+  <h1>Quando vender?<br>E quanto?</h1>
+  <p>A CoteCoffee transforma informações do mercado de café em sugestões simples, com os motivos explicados.</p>
+  <p>Somos uma startup universitária. Queremos saber se esta ideia faz sentido para quem produz café.</p>
+  <div class="note">Você verá um cenário fictício. Ele não serve para uma decisão real de venda.</div>
+  <p>A participação é voluntária. Não pedimos dados pessoais. Ao final, você poderá avaliar a experiência.</p>`},
+
+ "painel":{step:2,label:"Painel",back:"boas-vindas",btn:["Ver análise de mercado","mercado"],html:()=>`
+  <h1>Olá! Vamos começar?</h1>
+  <p>Confira o exemplo e veja o que observar antes de vender.</p>
+  <div class="tag">Demonstração · dados fictícios</div>
+  <div class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h2 style="color:var(--green)">Imagine este cenário<br>como exemplo</h2>
+      <svg width="56" height="44" viewBox="0 0 150 110">${LEAF.replace(/<svg[^>]*>|<\/svg>/g,"")}</svg>
+    </div>
+  </div>
+  <div class="card">
+    <p style="color:var(--ink)">Café arábica · Minas Gerais</p><hr style="border:0;border-top:1px solid var(--line);margin:8px 0">
+    <h2 style="font-size:20px">100 sacas disponíveis</h2><p>Cada saca tem 60 kg.</p><hr style="border:0;border-top:1px solid var(--line);margin:8px 0">
+    <p style="color:var(--ink)">Despesas a pagar em 7 dias.</p>
+  </div>
+  <p>Este exemplo não serve para uma decisão real de venda.</p>`},
+
+ "mercado":{step:3,label:"Mercado",back:"painel",btn:["Ver recomendação","recomendacao"],html:()=>`
+  <h1>Entenda o cenário</h1>
+  <div class="tag">Demonstração · dados fictícios</div>
+  <div class="note mint"><b>O que observar no mercado</b><b style="font-weight:500;color:var(--ink);margin-top:6px">Preço incerto</b>Não é possível garantir que esperar alguns dias resultará em uma cotação melhor.</div>
+  <h2 style="margin:16px 0 4px">O que importa neste exemplo?</h2>
+  <ul class="list">
+   <li><span><b>Prazo financeiro</b><br><span style="color:var(--muted);font-size:12px">Há despesas previstas para os próximos 7 dias.</span></span></li>
+   <li><span><b>Estoque disponível</b><br><span style="color:var(--muted);font-size:12px">O cenário considera 100 sacas de café arábica, de 60 kg cada.</span></span></li>
+   <li><span><b>Decisão de venda</b><br><span style="color:var(--muted);font-size:12px">É preciso considerar o prazo das despesas e as condições de negociação antes de decidir quanto vender.</span></span></li>
+  </ul>
+  <div class="note" style="margin-top:14px"><b>Importante neste teste</b>Os dados são fictícios. Esta tela não utiliza cotações reais nem prevê o preço futuro do café.</div>`},
+
+ "recomendacao":{step:4,label:"Recomendação",back:"mercado",btn:["Terminar percurso","avaliacao1"],html:()=>`
+  <h1>Uma venda em partes</h1>
+  <div class="tag">Cenário demonstrativo · Dados fictícios</div>
+  <div class="big"><small>Quantidade a avaliar</small><div class="n">30 sacas</div><div class="s">em até 7 dias</div><hr><div class="f">30% do estoque de exemplo: 100 sacas de 60 kg.</div></div>
+  <div class="card"><h2>70 sacas restantes</h2><p>Reavalie o restante após esse prazo.</p></div>
+  <div class="card"><div class="eyebrow">O que sabemos deste cenário</div><h2>Estoque e despesas</h2><p>Consideramos um estoque de 100 sacas de café arábica, de 60 kg cada, em Minas Gerais, e despesas com vencimento em 7 dias.</p></div>
+  <div class="card acc"><div class="eyebrow">Por que essa sugestão?</div><h2>Vender parte, reavaliar depois</h2>
+    <p>Neste exemplo, a venda parcial é considerada para cobrir as despesas previstas sem comprometer todo o estoque de uma só vez.</p>
+    <div class="more" hidden>
+      <p><b style="color:var(--ink)">1. Estoque disponível</b><br>O cenário considera 100 sacas de café.</p>
+      <p><b style="color:var(--ink)">2. Despesas previstas</b><br>O exemplo considera despesas com vencimento em 7 dias.</p>
+      <p><b style="color:var(--ink)">3. Venda parcial</b><br>A hipótese ilustrativa é avaliar a venda de 30 sacas e reavaliar o restante depois do prazo.</p>
+    </div>
+    <button class="btn link tog" data-acc data-open="Ocultar explicação ↑" data-closed="Veja a explicação ↓" aria-expanded="false" style="text-align:left;padding:4px 0">Veja a explicação ↓</button></div>
+  <div class="card acc"><div class="eyebrow">O que você precisa considerar?</div>
+    <p style="color:var(--ink)">Preços, qualidade do café, condições de venda e despesas podem mudar a melhor decisão.</p>
+    <div class="more" hidden>
+      <p><b style="color:var(--ink)">1. Variação dos preços</b><br>O preço do café pode subir ou cair. A tendência observada não garante que o mercado seguirá o mesmo caminho.</p>
+      <p><b style="color:var(--ink)">2. Despesas e compromissos</b><br>Considere as contas a pagar, os prazos e o valor mínimo de que precisa para manter sua atividade.</p>
+      <p><b style="color:var(--ink)">3. Condições do seu café</b><br>Qualidade, classificação, quantidade disponível e condições de armazenamento podem influenciar o preço recebido.</p>
+      <p><b style="color:var(--ink)">4. Condições de negociação</b><br>Compare as ofertas, os prazos de pagamento e as condições apresentadas por compradores ou cooperativas.</p>
+    </div>
+    <button class="btn link tog" data-acc data-open="Ocultar explicação ↑" data-closed="Ver cuidados e limitações ↓" aria-expanded="false" style="text-align:left;padding:4px 0">Ver cuidados e limitações ↓</button></div>
+  <div class="note"><b>Exemplo fictício</b>Esta sugestão é ilustrativa, não utiliza uma previsão real de preços e não garante melhores resultados.</div>`},
+
+ "avaliacao1":{step:5,label:"Avaliação",back:"recomendacao",btn:["Continuar","avaliacao2"],need:["clareza","ajuda","parte_util"],html:()=>`
+  <h1>Sobre a recomendação</h1>
+  <p>Não há resposta certa. Queremos sua opinião sincera. Pergunta 1 de 6.</p>
+  ${Q.single("clareza","1. A recomendação foi clara para você?","Depois de visualizar a recomendação, como você avalia a clareza da orientação sobre vender parte do estoque?",["Muito clara","Clara","Nem clara, nem confusa","Confusa","Muito confusa"])}
+  ${Q.single("ajuda","2. Quanto essa recomendação ajudaria você a decidir quando e quanto vender?","",["Ajudaria muito","Ajudaria um pouco","Não faria diferença","Ajudaria pouco ou nada","Não sei avaliar"])}
+  ${Q.single("parte_util","3. Qual parte da solução seria mais útil para você?","",["A recomendação de quando vender","A sugestão de quanto vender","A explicação dos motivos por trás da recomendação","As informações e tendências do mercado de café","Os alertas sobre riscos e fatores que devem ser considerados","Nenhuma dessas opções seria útil para mim"])}`},
+
+ "avaliacao2":{step:6,label:"Avaliação",back:"avaliacao1",btn:["Enviar avaliação","enviar"],need:["confianca","uso_prob"],html:()=>`
+  <h1>Confiança e uso</h1>
+  <p>Agora pense em uma decisão real de venda. Perguntas 4 a 6.</p>
+  ${Q.single("confianca","4. O quanto você confiaria em uma recomendação como essa para apoiar uma decisão real de venda?","",["Confiaria e consideraria seguir a recomendação","Consideraria a recomendação, mas compararia com outras fontes","Usaria apenas como informação complementar","Não confiaria o suficiente para considerar a recomendação","Preciso de mais informações para avaliar"])}
+  ${Q.single("uso_prob","5. Se a CoteCoffee estivesse disponível hoje, qual seria a probabilidade de você utilizá-la em uma próxima decisão de venda de café?","",["Com certeza utilizaria","Provavelmente utilizaria","Talvez utilizasse","Provavelmente não utilizaria","Com certeza não utilizaria"])}
+  <div class="q"><label class="t" for="condicoes">6. O que a CoteCoffee precisaria oferecer para que você confiasse na recomendação e a utilizasse em uma decisão real de venda?</label>
+  <div class="h">Pode citar informações necessárias, justificativas, histórico de recomendações, precisão, facilidade de uso ou outros fatores.</div>
+  <textarea id="condicoes" placeholder="Escreva aqui…">${esc(state.answers.condicoes||"")}</textarea></div>`},
+
+ "conclusao":{step:7,label:"Conclusão",back:null,btn:["Voltar ao painel","painel"],extra:["Rever recomendação","recomendacao"],html:()=>`
+  <div class="hero">${LEAF}</div>
+  <h1>Percurso concluído.</h1>
+  <p>Obrigado por participar. Sua opinião ajuda a melhorar a CoteCoffee.</p>
+  <div class="card"><h2>Era apenas uma demonstração</h2><p>Dados fictícios. Não use esta sugestão para uma venda real.</p></div>
+  <div class="note mint">Suas respostas foram registradas de forma anônima.</div>`},
+
+ "resultados":{step:0,label:"Resultados",back:"boas-vindas",btn:null,html:resultsHTML}
+};
+
+/* ===== COMPONENTES DE PERGUNTA ===== */
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+const Q = {
+ scale:(k,t,lo,hi)=>`<div class="q"><label class="t">${t}</label><div class="scale" data-k="${k}">${[1,2,3,4,5].map(n=>`<button type="button" data-v="${n}" class="${state.answers[k]===n?"on":""}" aria-pressed="${state.answers[k]===n}">${n}</button>`).join("")}</div><div class="scale-l"><span>${lo}</span><span>${hi}</span></div></div>`,
+ single:(k,t,h,o)=>`<div class="q"><label class="t">${t}</label>${h?`<div class="h">${h}</div>`:""}<div class="opts" data-k="${k}">${o.map(x=>`<button type="button" data-v="${esc(x)}" class="${state.answers[k]===x?"on":""}">${x}</button>`).join("")}</div></div>`,
+ multi:(k,t,o,h)=>`<div class="q"><label class="t">${t}</label>${h?`<div class="h">${h}</div>`:""}<div class="opts multi" data-k="${k}" data-m="1">${o.map(x=>`<button type="button" data-v="${esc(x)}" class="${(state.answers[k]||[]).includes(x)?"on":""}">${x}</button>`).join("")}</div></div>`
+};
+
+/* ===== RENDER ===== */
+const app = document.getElementById("app");
+function go(name){ location.hash = "#/"+name; }
+function render(){
+  const name = (location.hash.replace("#/","")||"boas-vindas");
+  const s = screens[name] || screens["boas-vindas"];
+  state.screen = name;
+  const bar = s.step ? `<div class="steps">${Array.from({length:STEPS},(_,i)=>`<i class="${i<s.step?"on":""}"></i>`).join("")}</div>
+     <div class="stepmeta"><b>${s.label}</b><span>Etapa ${s.step} de ${STEPS}</span></div>`:"";
+  app.innerHTML = `<header><div class="top">${s.back?`<button class="back" data-go="${s.back}">← Voltar</button>`:"<span></span>"}<span class="brand">CoteCoffee</span></div>${bar}</header>
+   <main class="fade" id="main">${s.html()}</main>
+   <footer>${s.btn?`<button class="btn" id="next">${s.btn[0]} →</button>`:""}${s.extra?`<button class="btn ${name==="conclusao"?"sec":"link"}" data-go="${s.extra[1]}">${s.extra[0]}</button>`:""}</footer>`;
+  const next = document.getElementById("next");
+  if(next){ refresh(); next.onclick = ()=>{ if(next.disabled) return; if(s.btn[1]==="enviar") return submit(); go(s.btn[1]); }; }
+  const ta = document.getElementById("condicoes");
+  if(ta) ta.oninput = ()=>{ state.answers.condicoes = ta.value; save(); };
+  document.getElementById("main").scrollTop = 0;
+}
+function refresh(){
+  const s = screens[state.screen], next = document.getElementById("next");
+  if(!next||!s.need) return;
+  next.disabled = !s.need.every(k=>state.answers[k]!==undefined);
+}
+app.addEventListener("click",e=>{
+  const g = e.target.closest("[data-go]"); if(g) return go(g.dataset.go);
+  const t = e.target.closest("[data-acc]");
+  if(t){ const m = t.parentElement.querySelector(".more"); const open = m.hidden; m.hidden = !open;
+    t.textContent = open ? t.dataset.open : t.dataset.closed; t.setAttribute("aria-expanded", open); return; }
+  const b = e.target.closest("[data-v]"); if(!b) return;
+  const box = b.parentElement, k = box.dataset.k, v = b.dataset.v;
+  if(box.dataset.m){
+    const arr = state.answers[k]||[]; const i = arr.indexOf(v);
+    i>=0 ? arr.splice(i,1) : arr.push(v); state.answers[k]=arr; b.classList.toggle("on");
+  } else {
+    state.answers[k] = box.classList.contains("scale") ? Number(v) : v;
+    box.querySelectorAll("button").forEach(x=>{x.classList.toggle("on",x===b);x.setAttribute("aria-pressed",x===b)});
+  }
+  save(); refresh();
+});
+window.addEventListener("hashchange",render);
+
+/* ===== ARMAZENAMENTO ===== */
+function loadAll(){ try{return JSON.parse(localStorage.getItem(CONFIG.storageKey)||"[]")}catch(e){return []} }
+async function submit(){
+  const btn = document.getElementById("next"); btn.disabled = true; btn.textContent = "Enviando…";
+  if(!state.answers.id) state.answers.id = (crypto.randomUUID?crypto.randomUUID():String(Date.now()));
+  const rec = {...state.answers, enviado_em:new Date().toISOString()};
+  try{
+    const all = loadAll().filter(r=>r.id!==rec.id); all.push(rec);
+    localStorage.setItem(CONFIG.storageKey, JSON.stringify(all));
+  }catch(e){}
+  if(CONFIG.endpoint){
+    try{ await fetch(CONFIG.endpoint,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain"},body:JSON.stringify(rec)}); }catch(e){}
+  }
+  save(); go("conclusao");
+}
+
+/* ===== TELA DE RESULTADOS (#/resultados) ===== */
+const OPT = {
+ clareza:["Muito clara","Clara","Nem clara, nem confusa","Confusa","Muito confusa"],
+ ajuda:["Ajudaria muito","Ajudaria um pouco","Não faria diferença","Ajudaria pouco ou nada","Não sei avaliar"],
+ parte_util:["A recomendação de quando vender","A sugestão de quanto vender","A explicação dos motivos por trás da recomendação","As informações e tendências do mercado de café","Os alertas sobre riscos e fatores que devem ser considerados","Nenhuma dessas opções seria útil para mim"],
+ confianca:["Confiaria e consideraria seguir a recomendação","Consideraria a recomendação, mas compararia com outras fontes","Usaria apenas como informação complementar","Não confiaria o suficiente para considerar a recomendação","Preciso de mais informações para avaliar"],
+ uso_prob:["Com certeza utilizaria","Provavelmente utilizaria","Talvez utilizasse","Provavelmente não utilizaria","Com certeza não utilizaria"]
+};
+const TITLES = {clareza:"1. Clareza da recomendação",ajuda:"2. Ajuda para decidir quando e quanto vender",parte_util:"3. Parte mais útil",confianca:"4. Confiança para uma decisão real",uso_prob:"5. Probabilidade de uso"};
+function resultsHTML(){
+  const all = loadAll(), n = all.length;
+  const dist = k=>OPT[k].map(o=>{const c=all.filter(r=>r[k]===o).length;return `<tr><td>${esc(o)}</td><td style="width:70px"><div class="bar"><i style="width:${n?c/n*100:0}%"></i></div></td><td>${c}</td></tr>`}).join("");
+  const cm = all.filter(r=>r.condicoes&&r.condicoes.trim()).map(r=>`<div class="cm">${esc(r.condicoes)}</div>`).join("")||"<p>Nenhuma resposta.</p>";
+  return `<div class="res"><h1>Resultados</h1>
+   <p>${n} avaliação(ões) neste navegador. Para reunir respostas de várias pessoas, configure o endpoint em CONFIG.</p>
+   ${Object.keys(OPT).map(k=>`<div class="card"><h2>${TITLES[k]}</h2><table>${dist(k)}</table></div>`).join("")}
+   <div class="card"><h2>6. O que precisaria oferecer</h2>${cm}</div>
+   <button class="btn sec" onclick="exportCSV()">Baixar CSV</button></div>`;
+}
+function exportCSV(){
+  const all = loadAll(); if(!all.length) return;
+  const cols = ["id","enviado_em","clareza","ajuda","parte_util","confianca","uso_prob","condicoes"];
+  const cell = v=>`"${(Array.isArray(v)?v.join("; "):(v??"")).toString().replace(/"/g,'""')}"`;
+  const csv = [cols.join(","),...all.map(r=>cols.map(c=>cell(r[c])).join(","))].join("\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob(["﻿"+csv],{type:"text/csv"})); a.download="cotecoffee-respostas.csv"; a.click();
+}
+render();
+</script>
+</body>
+</html>

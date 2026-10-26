@@ -1,0 +1,11 @@
+# Documentos internos (não publicar)
+*.pdf
+*.docx
+
+# Sistema e editor
+.DS_Store
+.vscode/
+.idea/
+
+# Vercel
+.vercel
