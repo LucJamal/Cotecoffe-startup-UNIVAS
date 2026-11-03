@@ -101,13 +101,26 @@ const LEAF = `<svg width="150" height="110" viewBox="0 0 150 110" aria-hidden="t
 <circle cx="86" cy="58" r="7" fill="#C9822B"/></svg>`;
 
 const STEPS = 7;
-const state = { answers: {}, screen: "boas-vindas" };
+const state = { answers: {}, screen: "apresentacao" };
 try { Object.assign(state.answers, JSON.parse(sessionStorage.getItem("ans")||"{}")); } catch(e){}
 const save = () => { try{ sessionStorage.setItem("ans", JSON.stringify(state.answers)); }catch(e){} };
 
 /* ===== TELAS ===== */
 const screens = {
- "boas-vindas":{step:1,label:"Boas-vindas",back:null,btn:["Entrar no painel inicial","painel"],html:()=>`
+ "apresentacao":{step:0,label:"Apresentação",back:null,btn:["Entendi. Quero conhecer a demonstração","boas-vindas"],html:()=>`
+  <div class="tag" style="margin-top:8px">Protótipo demonstrativo</div>
+  <h1>Conheça a proposta da CoteCoffee</h1>
+  <p>A CoteCoffee é uma proposta de ferramenta para apoiar decisões de comercialização de café. Nesta demonstração, você verá um exemplo de como uma recomendação poderia ser apresentada.</p>
+  <div class="card"><ul class="list">
+   <li>Esta é uma representação visual, não a aplicação final.</li>
+   <li>Os números e o cenário são fictícios.</li>
+   <li>Não consultamos cotações reais nem dados da sua propriedade.</li>
+   <li>A recomendação não usa um modelo de previsão e não deve orientar uma venda real.</li>
+   <li>O objetivo é avaliar sua compreensão e percepção da proposta, a partir de um questionário, mostrado ao final da experiência.</li>
+  </ul></div>
+  <p>Você pode apontar dúvidas, críticas e aspectos pouco úteis para sua realidade. Não existem respostas certas ou erradas.</p>`},
+
+ "boas-vindas":{step:1,label:"Boas-vindas",back:null,btn:["Entrar no painel inicial","painel"],extra:["Voltar ao Início","apresentacao"],html:()=>`
   <div class="hero">${LEAF}</div>
   <div class="eyebrow">Mais clareza para quem produz</div>
   <h1>Quando vender?<br>E quanto?</h1>
@@ -193,7 +206,7 @@ const screens = {
   <div class="card"><h2>Era apenas uma demonstração</h2><p>Dados fictícios. Não use esta sugestão para uma venda real.</p></div>
   <div class="note mint">Suas respostas foram registradas de forma anônima.</div>`},
 
- "resultados":{step:0,label:"Resultados",back:"boas-vindas",btn:null,html:resultsHTML}
+ "resultados":{step:0,label:"Resultados",back:"apresentacao",btn:null,html:resultsHTML}
 };
 
 /* ===== COMPONENTES DE PERGUNTA ===== */
@@ -208,14 +221,14 @@ const Q = {
 const app = document.getElementById("app");
 function go(name){ location.hash = "#/"+name; }
 function render(){
-  const name = (location.hash.replace("#/","")||"boas-vindas");
-  const s = screens[name] || screens["boas-vindas"];
+  const name = (location.hash.replace("#/","")||"apresentacao");
+  const s = screens[name] || screens["apresentacao"];
   state.screen = name;
   const bar = s.step ? `<div class="steps">${Array.from({length:STEPS},(_,i)=>`<i class="${i<s.step?"on":""}"></i>`).join("")}</div>
      <div class="stepmeta"><b>${s.label}</b><span>Etapa ${s.step} de ${STEPS}</span></div>`:"";
   app.innerHTML = `<header><div class="top">${s.back?`<button class="back" data-go="${s.back}">← Voltar</button>`:"<span></span>"}<span class="brand">CoteCoffee</span></div>${bar}</header>
    <main class="fade" id="main">${s.html()}</main>
-   <footer>${s.btn?`<button class="btn" id="next">${s.btn[0]} →</button>`:""}${s.extra?`<button class="btn ${name==="conclusao"?"sec":"link"}" data-go="${s.extra[1]}">${s.extra[0]}</button>`:""}</footer>`;
+   <footer>${s.btn?`<button class="btn" id="next">${s.btn[0]} →</button>`:""}${s.extra?`<button class="btn ${name==="conclusao"||name==="boas-vindas"?"sec":"link"}" data-go="${s.extra[1]}">${s.extra[0]}</button>`:""}</footer>`;
   const next = document.getElementById("next");
   if(next){ refresh(); next.onclick = ()=>{ if(next.disabled) return; if(s.btn[1]==="enviar") return submit(); go(s.btn[1]); }; }
   const ta = document.getElementById("condicoes");
